@@ -10,6 +10,12 @@ export default mergeConfig(
       fs: {
         strict: true,
       },
+      proxy: {
+        '/user-center-api': {
+          target: 'http://localhost:8101',
+          changeOrigin: true,
+        },
+      },
     },
     plugins: [
       eslint({
