@@ -3,7 +3,7 @@ import { AppRouteRecordRaw } from '../types';
 
 const USER_MANAGEMENT: AppRouteRecordRaw = {
   path: '/user_management',
-  name: 'userManagement',
+  name: 'UserManagement',
   component: DEFAULT_LAYOUT,
   meta: {
     locale: 'menu.user_management',
@@ -13,9 +13,9 @@ const USER_MANAGEMENT: AppRouteRecordRaw = {
   },
   children: [
     {
-      path: 'search-table', // The midline path complies with SEO specifications
-      name: 'SearchTable',
-      component: () => import('@/views/list/search-table/index.vue'),
+      path: 'user_list', // The midline path complies with SEO specifications
+      name: 'UserList',
+      component: () => import('@/views/user_management/user_list/index.vue'),
       meta: {
         locale: 'menu.user_list',
         requiresAuth: true,
