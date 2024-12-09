@@ -385,7 +385,7 @@
     setLoading(true);
     try {
       const { data } = await listUserByPage(params);
-      renderData.value = data.list;
+      renderData.value = data.records;
       pagination.current = params.current;
       pagination.total = data.total;
     } catch (err) {
