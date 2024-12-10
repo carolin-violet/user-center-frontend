@@ -1,5 +1,8 @@
 export default {
-  'menu.list.userManagement': 'User Table',
+  'menu.userManagement': 'User Management',
+  'menu.userManagement.list': 'User Table',
+  'menu.userManagement.add': 'User Add',
+  'menu.userManagement.edit': 'User Edit',
   'userManagement.form.userName': 'Set userName',
   'userManagement.form.userName.placeholder': 'Please enter User Name',
   'userManagement.form.userAccount': 'Set userAccount',
@@ -44,4 +47,21 @@ export default {
   'userManagement.actions.refresh': 'refresh',
   'userManagement.actions.density': 'density',
   'userManagement.actions.columnSetting': 'columnSetting',
+
+  // 创建编辑页面
+  'userManagement.userInfo.form.userName': 'userName',
+  'userManagement.userInfo.form.userProfile': 'userProfile',
+  'userManagement.userInfo.form.userAvatar': 'userAvatar',
+  'userManagement.userInfo.form.userRole': 'userRole',
+  'userManagement.userInfo.form.email': 'email',
+  'userManagement.userInfo.form.phone': 'phone',
+  // 表单占位信息
+  'userManagement.userInfo.placeholder.userName': 'Please Set userName',
+  'userManagement.userInfo.placeholder.userProfile': 'Please Set userProfile',
+  'userManagement.userInfo.placeholder.userAvatar': 'Please Set userAvatar',
+  'userManagement.userInfo.placeholder.userRole': 'Please Set userRole',
+  'userManagement.userInfo.placeholder.email': 'Please Set email',
+  'userManagement.userInfo.placeholder.phone': 'Please Set phone',
+  // 表单校验错误提示
+  'userManagement.form.error.userName.required': 'Please Set userName',
 };

@@ -4,7 +4,7 @@ import localeLogin from '@/views/login/locale/en-US';
 import localeWorkplace from '@/views/dashboard/workplace/locale/en-US';
 
 import localeMonitor from '@/views/dashboard/monitor/locale/en-US';
-import userManagement from '@/views/user_management/user_list/locale/zh-CN';
+import userManagement from '@/views/user_management/locale/zh-CN';
 
 import localeStepForm from '@/views/form/step/locale/en-US';
 import localeGroupForm from '@/views/form/group/locale/en-US';
@@ -38,6 +38,9 @@ export default {
   'menu.profile': 'Profile',
   'menu.visualization': 'Data Visualization',
   'menu.user': 'User Center',
+  'menu.user_list': 'User List',
+  'menu.user_add': 'User Add',
+  'menu.user_edit': 'User Edit',
   'menu.arcoWebsite': 'Arco Design',
   'menu.faq': 'FAQ',
   'navbar.docs': 'Docs',

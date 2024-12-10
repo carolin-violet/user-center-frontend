@@ -4,7 +4,7 @@ import localeLogin from '@/views/login/locale/zh-CN';
 import localeWorkplace from '@/views/dashboard/workplace/locale/zh-CN';
 
 import localeMonitor from '@/views/dashboard/monitor/locale/zh-CN';
-import userManagement from '@/views/user_management/user_list/locale/zh-CN';
+import userManagement from '@/views/user_management/locale/zh-CN';
 
 import localeStepForm from '@/views/form/step/locale/zh-CN';
 import localeGroupForm from '@/views/form/group/locale/zh-CN';
@@ -40,6 +40,8 @@ export default {
   'menu.user': '个人中心',
   'menu.user_management': '用户管理',
   'menu.user_list': '用户列表',
+  'menu.user_add': '添加用户',
+  'menu.user_edit': '编辑用户',
   'menu.arcoWebsite': 'Arco Design',
   'menu.faq': '常见问题',
   'navbar.docs': '文档中心',

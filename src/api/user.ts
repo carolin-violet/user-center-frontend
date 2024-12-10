@@ -65,9 +65,7 @@ export function getMenuList() {
  * @returns
  */
 export function deleteUser(data: DeleteData) {
-  return axios.delete<boolean>('/user/delete', {
-    data,
-  });
+  return axios.post<boolean>('/user/delete', data);
 }
 
 /**

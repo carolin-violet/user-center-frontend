@@ -1,7 +1,7 @@
 <template>
   <div class="container">
-    <Breadcrumb :items="['menu.list', 'menu.list.userManagement']" />
-    <a-card class="general-card" :title="$t('menu.list.userManagement')">
+    <Breadcrumb :items="['menu.userManagement', 'menu.userManagement.list']" />
+    <a-card class="general-card" :title="$t('menu.userManagement.list')">
       <a-row>
         <a-col :flex="1">
           <a-form
@@ -60,30 +60,6 @@
                   />
                 </a-form-item>
               </a-col>
-              <a-col :span="8">
-                <a-form-item
-                  field="filterType"
-                  :label="$t('userManagement.form.filterType')"
-                >
-                  <a-select
-                    v-model="formModel.filterType"
-                    :options="filterTypeOptions"
-                    :placeholder="$t('userManagement.form.selectDefault')"
-                  />
-                </a-form-item>
-              </a-col>
-              <a-col :span="8">
-                <a-form-item
-                  field="status"
-                  :label="$t('userManagement.form.status')"
-                >
-                  <a-select
-                    v-model="formModel.status"
-                    :options="statusOptions"
-                    :placeholder="$t('userManagement.form.selectDefault')"
-                  />
-                </a-form-item>
-              </a-col>
             </a-row>
           </a-form>
         </a-col>
@@ -109,7 +85,7 @@
       <a-row style="margin-bottom: 16px">
         <a-col :span="12">
           <a-space>
-            <a-button type="primary">
+            <a-button type="primary" @click="handleAdd">
               <template #icon>
                 <icon-plus />
               </template>
@@ -227,12 +203,12 @@
             {{ record.userRole }}
           </a-tag>
         </template>
-        <template #operations>
+        <template #operations="{ record }">
           <a-button
             v-permission="['admin']"
             type="text"
             size="small"
-            @click="handleEdit"
+            @click="handleEdit(record)"
           >
             {{ $t('userManagement.operation.edit') }}
           </a-button>
@@ -241,7 +217,7 @@
             type="text"
             size="small"
             status="danger"
-            @click="handleDelete"
+            @click="handleDelete(record)"
           >
             {{ $t('userManagement.operation.delete') }}
           </a-button>
@@ -261,9 +237,15 @@
   import type { TableColumnData } from '@arco-design/web-vue/es/table/interface';
   import cloneDeep from 'lodash/cloneDeep';
   import Sortable from 'sortablejs';
+  import { useRouter } from 'vue-router';
+  import { Message, Modal } from '@arco-design/web-vue';
+
+  import { UserState } from '@/store/modules/user/types';
 
   type SizeProps = 'mini' | 'small' | 'medium' | 'large';
   type Column = TableColumnData & { checked?: true };
+
+  const router = useRouter();
 
   const generateFormModel = () => {
     return {
@@ -369,33 +351,14 @@
       value: 'ban',
     },
   ]);
-  const filterTypeOptions = computed<SelectOptionData[]>(() => [
-    {
-      label: t('userManagement.form.filterType.artificial'),
-      value: 'artificial',
-    },
-    {
-      label: t('userManagement.form.filterType.rules'),
-      value: 'rules',
-    },
-  ]);
-  const statusOptions = computed<SelectOptionData[]>(() => [
-    {
-      label: t('userManagement.form.status.online'),
-      value: 'online',
-    },
-    {
-      label: t('userManagement.form.status.offline'),
-      value: 'offline',
-    },
-  ]);
+
   const fetchData = async (params: any = { current: 1, pageSize: 20 }) => {
     setLoading(true);
     try {
       const { data } = await listUserByPage(params);
       renderData.value = data.records;
       pagination.current = params.current;
-      pagination.total = data.total;
+      pagination.total = Number(data.total);
     } catch (err) {
       // you can report use errorHandler or other
     } finally {
@@ -425,12 +388,31 @@
     size.value = val as SizeProps;
   };
 
-  const handleEdit = () => {
-    console.log('xxx');
+  const handleAdd = () => {
+    router.push('/user_management/user_add');
   };
-  const handleDelete = () => {
-    deleteUser({
-      id: 123,
+
+  const handleEdit = (user: Partial<UserState>) => {
+    router.push({
+      path: '/user_management/user_edit',
+      query: {
+        id: user.id,
+      },
+    });
+  };
+
+  const handleDelete = (user: Partial<UserState>) => {
+    Modal.open({
+      title: '删除确认',
+      content: '确认删除该账户吗?',
+      onOk: () => {
+        deleteUser({
+          id: user.id,
+        }).then(() => {
+          Message.success('删除成功!');
+          search();
+        });
+      },
     });
   };
 

@@ -10,6 +10,7 @@ const VISUALIZATION: AppRouteRecordRaw = {
     requiresAuth: true,
     icon: 'icon-apps',
     order: 1,
+    roles: ['ban'],
   },
   children: [
     {

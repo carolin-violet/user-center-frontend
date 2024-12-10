@@ -1,5 +1,10 @@
 export default {
-  'menu.list.userManagement': '用户列表',
+  // 用户管理菜单
+  'menu.userManagement': '用户管理',
+  'menu.userManagement.list': '用户列表',
+  'menu.userManagement.add': '添加用户',
+  'menu.userManagement.edit': '编辑用户',
+  // 列表页
   'userManagement.form.userName': '用户昵称',
   'userManagement.form.userName.placeholder': '请输入用户昵称',
   'userManagement.form.userAccount': '用户账号',
@@ -10,7 +15,6 @@ export default {
   'userManagement.form.userRole.ban': '禁用',
   'userManagement.form.filterType': '筛选方式',
   'userManagement.form.createTime': '创建时间',
-
   'userManagement.form.filterType.artificial': '人工筛选',
   'userManagement.form.filterType.rules': '规则筛选',
   'userManagement.form.status': '状态',
@@ -45,4 +49,22 @@ export default {
   'userManagement.actions.refresh': '刷新',
   'userManagement.actions.density': '密度',
   'userManagement.actions.columnSetting': '列设置',
+
+  // 创建编辑页面
+  // 表单信息
+  'userManagement.userInfo.form.userName': '用户昵称',
+  'userManagement.userInfo.form.userProfile': '用户简介',
+  'userManagement.userInfo.form.userAvatar': '用户头像',
+  'userManagement.userInfo.form.userRole': '用户角色',
+  'userManagement.userInfo.form.email': '邮箱',
+  'userManagement.userInfo.form.phone': '电话',
+  // 表单占位信息
+  'userManagement.userInfo.placeholder.userName': '请输入用户昵称',
+  'userManagement.userInfo.placeholder.userProfile': '请输入用户简介',
+  'userManagement.userInfo.placeholder.userAvatar': '请上传用户头像',
+  'userManagement.userInfo.placeholder.userRole': '请选择用户角色',
+  'userManagement.userInfo.placeholder.email': '请输入邮箱',
+  'userManagement.userInfo.placeholder.phone': '请输入电话',
+  // 表单校验错误提示
+  'userManagement.form.error.userName.required': '请输入用户昵称',
 };
