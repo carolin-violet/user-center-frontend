@@ -1,7 +1,7 @@
 <template>
   <div class="container">
-    <Breadcrumb :items="['menu.list', 'menu.list.searchTable']" />
-    <a-card class="general-card" :title="$t('menu.list.searchTable')">
+    <Breadcrumb :items="['menu.list', 'menu.list.userManagement']" />
+    <a-card class="general-card" :title="$t('menu.list.userManagement')">
       <a-row>
         <a-col :flex="1">
           <a-form
@@ -13,67 +13,74 @@
             <a-row :gutter="16">
               <a-col :span="8">
                 <a-form-item
-                  field="number"
-                  :label="$t('searchTable.form.number')"
+                  field="userName"
+                  :label="$t('userManagement.form.userName')"
                 >
                   <a-input
-                    v-model="formModel.number"
-                    :placeholder="$t('searchTable.form.number.placeholder')"
+                    v-model="formModel.userName"
+                    :placeholder="
+                      $t('userManagement.form.userName.placeholder')
+                    "
                   />
                 </a-form-item>
               </a-col>
               <a-col :span="8">
-                <a-form-item field="name" :label="$t('searchTable.form.name')">
+                <a-form-item
+                  field="userAccount"
+                  :label="$t('userManagement.form.userAccount')"
+                >
                   <a-input
-                    v-model="formModel.name"
-                    :placeholder="$t('searchTable.form.name.placeholder')"
+                    v-model="formModel.userAccount"
+                    :placeholder="
+                      $t('userManagement.form.userAccount.placeholder')
+                    "
                   />
                 </a-form-item>
               </a-col>
               <a-col :span="8">
                 <a-form-item
-                  field="contentType"
-                  :label="$t('searchTable.form.contentType')"
+                  field="userRole"
+                  :label="$t('userManagement.form.userRole')"
                 >
                   <a-select
-                    v-model="formModel.contentType"
-                    :options="contentTypeOptions"
-                    :placeholder="$t('searchTable.form.selectDefault')"
+                    v-model="formModel.userRole"
+                    :options="userRoleTypeOptions"
+                    :placeholder="$t('userManagement.form.userRole')"
                   />
                 </a-form-item>
               </a-col>
               <a-col :span="8">
                 <a-form-item
-                  field="filterType"
-                  :label="$t('searchTable.form.filterType')"
-                >
-                  <a-select
-                    v-model="formModel.filterType"
-                    :options="filterTypeOptions"
-                    :placeholder="$t('searchTable.form.selectDefault')"
-                  />
-                </a-form-item>
-              </a-col>
-              <a-col :span="8">
-                <a-form-item
-                  field="createdTime"
-                  :label="$t('searchTable.form.createdTime')"
+                  field="createTime"
+                  :label="$t('userManagement.form.createTime')"
                 >
                   <a-range-picker
-                    v-model="formModel.createdTime"
+                    v-model="formModel.createTime"
                     style="width: 100%"
                   />
                 </a-form-item>
               </a-col>
               <a-col :span="8">
                 <a-form-item
+                  field="filterType"
+                  :label="$t('userManagement.form.filterType')"
+                >
+                  <a-select
+                    v-model="formModel.filterType"
+                    :options="filterTypeOptions"
+                    :placeholder="$t('userManagement.form.selectDefault')"
+                  />
+                </a-form-item>
+              </a-col>
+              <a-col :span="8">
+                <a-form-item
                   field="status"
-                  :label="$t('searchTable.form.status')"
+                  :label="$t('userManagement.form.status')"
                 >
                   <a-select
                     v-model="formModel.status"
                     :options="statusOptions"
-                    :placeholder="$t('searchTable.form.selectDefault')"
+                    :placeholder="$t('userManagement.form.selectDefault')"
                   />
                 </a-form-item>
               </a-col>
@@ -87,13 +94,13 @@
               <template #icon>
                 <icon-search />
               </template>
-              {{ $t('searchTable.form.search') }}
+              {{ $t('userManagement.form.search') }}
             </a-button>
             <a-button @click="reset">
               <template #icon>
                 <icon-refresh />
               </template>
-              {{ $t('searchTable.form.reset') }}
+              {{ $t('userManagement.form.reset') }}
             </a-button>
           </a-space>
         </a-col>
@@ -106,12 +113,12 @@
               <template #icon>
                 <icon-plus />
               </template>
-              {{ $t('searchTable.operation.create') }}
+              {{ $t('userManagement.operation.create') }}
             </a-button>
             <a-upload action="/">
               <template #upload-button>
                 <a-button>
-                  {{ $t('searchTable.operation.import') }}
+                  {{ $t('userManagement.operation.import') }}
                 </a-button>
               </template>
             </a-upload>
@@ -125,15 +132,15 @@
             <template #icon>
               <icon-download />
             </template>
-            {{ $t('searchTable.operation.download') }}
+            {{ $t('userManagement.operation.download') }}
           </a-button>
-          <a-tooltip :content="$t('searchTable.actions.refresh')">
+          <a-tooltip :content="$t('userManagement.actions.refresh')">
             <div class="action-icon" @click="search"
               ><icon-refresh size="18"
             /></div>
           </a-tooltip>
           <a-dropdown @select="handleSelectDensity">
-            <a-tooltip :content="$t('searchTable.actions.density')">
+            <a-tooltip :content="$t('userManagement.actions.density')">
               <div class="action-icon"><icon-line-height size="18" /></div>
             </a-tooltip>
             <template #content>
@@ -147,7 +154,7 @@
               </a-doption>
             </template>
           </a-dropdown>
-          <a-tooltip :content="$t('searchTable.actions.columnSetting')">
+          <a-tooltip :content="$t('userManagement.actions.columnSetting')">
             <a-popover
               trigger="click"
               position="bl"
@@ -196,48 +203,47 @@
         <template #index="{ rowIndex }">
           {{ rowIndex + 1 + (pagination.current - 1) * pagination.pageSize }}
         </template>
-        <template #contentType="{ record }">
-          <a-space>
-            <a-avatar
-              v-if="record.contentType === 'img'"
-              :size="16"
-              shape="square"
-            >
-              <img
-                alt="avatar"
-                src="//p3-armor.byteimg.com/tos-cn-i-49unhts6dw/581b17753093199839f2e327e726b157.svg~tplv-49unhts6dw-image.image"
-              />
-            </a-avatar>
-            <a-avatar
-              v-else-if="record.contentType === 'horizontalVideo'"
-              :size="16"
-              shape="square"
-            >
-              <img
-                alt="avatar"
-                src="//p3-armor.byteimg.com/tos-cn-i-49unhts6dw/77721e365eb2ab786c889682cbc721c1.svg~tplv-49unhts6dw-image.image"
-              />
-            </a-avatar>
-            <a-avatar v-else :size="16" shape="square">
-              <img
-                alt="avatar"
-                src="//p3-armor.byteimg.com/tos-cn-i-49unhts6dw/ea8b09190046da0ea7e070d83c5d1731.svg~tplv-49unhts6dw-image.image"
-              />
-            </a-avatar>
-            {{ $t(`searchTable.form.contentType.${record.contentType}`) }}
-          </a-space>
+        <template #userAvatar="{ record }">
+          <a-avatar :size="48" shape="square">
+            <img alt="avatar" :src="record.userAvatar" />
+          </a-avatar>
         </template>
-        <template #filterType="{ record }">
-          {{ $t(`searchTable.form.filterType.${record.filterType}`) }}
-        </template>
-        <template #status="{ record }">
-          <span v-if="record.status === 'offline'" class="circle"></span>
-          <span v-else class="circle pass"></span>
-          {{ $t(`searchTable.form.status.${record.status}`) }}
+        <template #userRole="{ record }">
+          <a-tag
+            v-if="record.userRole === 'admin'"
+            color="purple"
+            :closable="false"
+          >
+            {{ record.userRole }}
+          </a-tag>
+          <a-tag
+            v-if="record.userRole === 'user'"
+            color="cyan"
+            :closable="false"
+          >
+            {{ record.userRole }}
+          </a-tag>
+          <a-tag v-if="record.userRole === 'ban'" color="red" :closable="false">
+            {{ record.userRole }}
+          </a-tag>
         </template>
         <template #operations>
-          <a-button v-permission="['admin']" type="text" size="small">
-            {{ $t('searchTable.columns.operations.view') }}
+          <a-button
+            v-permission="['admin']"
+            type="text"
+            size="small"
+            @click="handleEdit"
+          >
+            {{ $t('userManagement.operation.edit') }}
+          </a-button>
+          <a-button
+            v-permission="['admin']"
+            type="text"
+            size="small"
+            status="danger"
+            @click="handleDelete"
+          >
+            {{ $t('userManagement.operation.delete') }}
           </a-button>
         </template>
       </a-table>
@@ -287,101 +293,103 @@
   });
   const densityList = computed(() => [
     {
-      name: t('searchTable.size.mini'),
+      name: t('userManagement.size.mini'),
       value: 'mini',
     },
     {
-      name: t('searchTable.size.small'),
+      name: t('userManagement.size.small'),
       value: 'small',
     },
     {
-      name: t('searchTable.size.medium'),
+      name: t('userManagement.size.medium'),
       value: 'medium',
     },
     {
-      name: t('searchTable.size.large'),
+      name: t('userManagement.size.large'),
       value: 'large',
     },
   ]);
   const columns = computed<TableColumnData[]>(() => [
     {
-      title: t('searchTable.columns.index'),
+      title: t('userManagement.columns.index'),
       dataIndex: 'index',
       slotName: 'index',
     },
     {
-      title: t('searchTable.columns.number'),
-      dataIndex: 'number',
+      title: t('userManagement.columns.userAccount'),
+      dataIndex: 'userAccount',
     },
     {
-      title: t('searchTable.columns.name'),
-      dataIndex: 'name',
+      title: t('userManagement.columns.userName'),
+      dataIndex: 'userName',
     },
     {
-      title: t('searchTable.columns.contentType'),
-      dataIndex: 'contentType',
-      slotName: 'contentType',
+      title: t('userManagement.columns.userProfile'),
+      dataIndex: 'userProfile',
     },
     {
-      title: t('searchTable.columns.filterType'),
-      dataIndex: 'filterType',
+      title: t('userManagement.columns.userAvatar'),
+      dataIndex: 'userAvatar',
+      slotName: 'userAvatar',
     },
     {
-      title: t('searchTable.columns.count'),
-      dataIndex: 'count',
+      title: t('userManagement.columns.phone'),
+      dataIndex: 'phone',
     },
     {
-      title: t('searchTable.columns.createdTime'),
-      dataIndex: 'createdTime',
+      title: t('userManagement.columns.email'),
+      dataIndex: 'email',
     },
     {
-      title: t('searchTable.columns.status'),
-      dataIndex: 'status',
-      slotName: 'status',
+      title: t('userManagement.columns.userRole'),
+      dataIndex: 'userRole',
+      slotName: 'userRole',
     },
     {
-      title: t('searchTable.columns.operations'),
+      title: t('userManagement.columns.createTime'),
+      dataIndex: 'createTime',
+    },
+    {
+      title: t('userManagement.columns.operations'),
       dataIndex: 'operations',
       slotName: 'operations',
     },
   ]);
-  const contentTypeOptions = computed<SelectOptionData[]>(() => [
+  const userRoleTypeOptions = computed<SelectOptionData[]>(() => [
     {
-      label: t('searchTable.form.contentType.img'),
-      value: 'img',
+      label: t('userManagement.form.userRole.admin'),
+      value: 'admin',
     },
     {
-      label: t('searchTable.form.contentType.horizontalVideo'),
-      value: 'horizontalVideo',
+      label: t('userManagement.form.userRole.user'),
+      value: 'user',
     },
     {
-      label: t('searchTable.form.contentType.verticalVideo'),
-      value: 'verticalVideo',
+      label: t('userManagement.form.userRole.ban'),
+      value: 'ban',
     },
   ]);
   const filterTypeOptions = computed<SelectOptionData[]>(() => [
     {
-      label: t('searchTable.form.filterType.artificial'),
+      label: t('userManagement.form.filterType.artificial'),
       value: 'artificial',
     },
     {
-      label: t('searchTable.form.filterType.rules'),
+      label: t('userManagement.form.filterType.rules'),
       value: 'rules',
     },
   ]);
   const statusOptions = computed<SelectOptionData[]>(() => [
     {
-      label: t('searchTable.form.status.online'),
+      label: t('userManagement.form.status.online'),
       value: 'online',
     },
     {
-      label: t('searchTable.form.status.offline'),
+      label: t('userManagement.form.status.offline'),
       value: 'offline',
     },
   ]);
-  const fetchData = async (
-    params: any = { current: 1, pageSize: 20 }
-  ) => {
+  const fetchData = async (params: any = { current: 1, pageSize: 20 }) => {
     setLoading(true);
     try {
       const { data } = await listUserByPage(params);
@@ -415,6 +423,15 @@
     e: Event
   ) => {
     size.value = val as SizeProps;
+  };
+
+  const handleEdit = () => {
+    console.log('xxx');
+  };
+  const handleDelete = () => {
+    deleteUser({
+      id: 123,
+    });
   };
 
   const handleChange = (
@@ -479,7 +496,7 @@
 
 <script lang="ts">
   export default {
-    name: 'SearchTable',
+    name: 'UserManagement',
   };
 </script>
 

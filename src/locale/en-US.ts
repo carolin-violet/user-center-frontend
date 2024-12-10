@@ -4,9 +4,7 @@ import localeLogin from '@/views/login/locale/en-US';
 import localeWorkplace from '@/views/dashboard/workplace/locale/en-US';
 
 import localeMonitor from '@/views/dashboard/monitor/locale/en-US';
-
-import localeSearchTable from '@/views/list/search-table/locale/en-US';
-import localeCardList from '@/views/list/card/locale/en-US';
+import userManagement from '@/views/user_management/user_list/locale/zh-CN';
 
 import localeStepForm from '@/views/form/step/locale/en-US';
 import localeGroupForm from '@/views/form/group/locale/en-US';
@@ -50,8 +48,6 @@ export default {
   ...localeWorkplace,
 
   ...localeMonitor,
-  ...localeSearchTable,
-  ...localeCardList,
   ...localeStepForm,
   ...localeGroupForm,
   ...localeBasicProfile,
@@ -64,4 +60,5 @@ export default {
   ...locale500,
   ...localeUserInfo,
   ...localeUserSetting,
+  ...userManagement,
 };
