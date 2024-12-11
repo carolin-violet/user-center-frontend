@@ -45,7 +45,7 @@
             },
           ]"
         >
-          <a-input
+          <a-input-password
             v-model="formData.userPassword"
             :placeholder="
               $t('userManagement.userInfo.placeholder.userPassword')

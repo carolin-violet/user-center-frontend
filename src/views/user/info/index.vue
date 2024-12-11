@@ -2,7 +2,7 @@
   <div class="container">
     <Breadcrumb :items="['menu.user', 'menu.user.info']" />
     <UserInfoHeader />
-    <div class="content">
+    <!-- <div class="content">
       <div class="content-left">
         <a-grid :cols="24" :col-gap="16" :row-gap="16">
           <a-grid-item :span="24">
@@ -23,16 +23,16 @@
           </a-grid-item>
         </a-grid>
       </div>
-    </div>
+    </div> -->
   </div>
 </template>
 
 <script lang="ts" setup>
   import UserInfoHeader from './components/user-info-header.vue';
-  import LatestNotification from './components/latest-notification.vue';
-  import MyProject from './components/my-project.vue';
-  import LatestActivity from './components/latest-activity.vue';
-  import MyTeam from './components/my-team.vue';
+  // import LatestNotification from './components/latest-notification.vue';
+  // import MyProject from './components/my-project.vue';
+  // import LatestActivity from './components/latest-activity.vue';
+  // import MyTeam from './components/my-team.vue';
 </script>
 
 <script lang="ts">

@@ -5,10 +5,10 @@
         <template #trigger-icon>
           <icon-camera />
         </template>
-        <img :src="userInfo.avatar" />
+        <img :src="userInfo.userAvatar" />
       </a-avatar>
       <a-typography-title :heading="6" style="margin: 0">
-        {{ userInfo.name }}
+        {{ userInfo.userName }}
       </a-typography-title>
       <div class="user-msg">
         <a-space :size="18">

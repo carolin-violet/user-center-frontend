@@ -78,7 +78,7 @@ export function updateUser(data: UserState) {
 }
 
 /**
- * 更新用户密码
+ * 更新用户密码(管理员)
  * @param data
  * @returns
  */
@@ -115,4 +115,22 @@ export function getUserById(userId: string) {
  */
 export function listUserByPage(data: UserQueryRequest) {
   return axios.post<Partial<UserState>[]>('/user/list/page', data);
+}
+
+/**
+ * 用户更新自己的信息
+ * @param data
+ * @returns
+ */
+export function updatePersonalInfo(data: UserState) {
+  return axios.post<boolean>('/user/update/my', data);
+}
+
+/**
+ * 用户更新自己的密码
+ * @param data
+ * @returns
+ */
+export function updatePersonalPassword(data: UserState) {
+  return axios.post<boolean>('/user/edit/password/my', data);
 }

@@ -1,124 +1,78 @@
 <template>
-  <a-list :bordered="false">
-    <a-list-item>
-      <a-list-item-meta>
-        <template #avatar>
-          <a-typography-paragraph>
-            {{ $t('userSetting.SecuritySettings.form.label.password') }}
-          </a-typography-paragraph>
-        </template>
-        <template #description>
-          <div class="content">
-            <a-typography-paragraph>
-              {{ $t('userSetting.SecuritySettings.placeholder.password') }}
-            </a-typography-paragraph>
-          </div>
-          <div class="operation">
-            <a-link>
-              {{ $t('userSetting.SecuritySettings.button.update') }}
-            </a-link>
-          </div>
-        </template>
-      </a-list-item-meta>
-    </a-list-item>
-    <a-list-item>
-      <a-list-item-meta>
-        <template #avatar>
-          <a-typography-paragraph>
-            {{ $t('userSetting.SecuritySettings.form.label.securityQuestion') }}
-          </a-typography-paragraph>
-        </template>
-        <template #description>
-          <div class="content">
-            <a-typography-paragraph class="tip">
-              {{
-                $t('userSetting.SecuritySettings.placeholder.securityQuestion')
-              }}
-            </a-typography-paragraph>
-          </div>
-          <div class="operation">
-            <a-link>
-              {{ $t('userSetting.SecuritySettings.button.settings') }}
-            </a-link>
-          </div>
-        </template>
-      </a-list-item-meta>
-    </a-list-item>
-    <a-list-item>
-      <a-list-item-meta>
-        <template #avatar>
-          <a-typography-paragraph>
-            {{ $t('userSetting.SecuritySettings.form.label.phone') }}
-          </a-typography-paragraph>
-        </template>
-        <template #description>
-          <div class="content">
-            <a-typography-paragraph>
-              已绑定：150******50
-            </a-typography-paragraph>
-          </div>
-          <div class="operation">
-            <a-link>
-              {{ $t('userSetting.SecuritySettings.button.update') }}
-            </a-link>
-          </div>
-        </template>
-      </a-list-item-meta>
-    </a-list-item>
-    <a-list-item>
-      <a-list-item-meta>
-        <template #avatar>
-          <a-typography-paragraph>
-            {{ $t('userSetting.SecuritySettings.form.label.email') }}
-          </a-typography-paragraph>
-        </template>
-        <template #description>
-          <div class="content">
-            <a-typography-paragraph class="tip">
-              {{ $t('userSetting.SecuritySettings.placeholder.email') }}
-            </a-typography-paragraph>
-          </div>
-          <div class="operation">
-            <a-link>
-              {{ $t('userSetting.SecuritySettings.button.update') }}
-            </a-link>
-          </div>
-        </template>
-      </a-list-item-meta>
-    </a-list-item>
-  </a-list>
+  <a-form
+    ref="formRef"
+    :model="formData"
+    class="form"
+    :label-col-props="{ span: 8 }"
+    :wrapper-col-props="{ span: 16 }"
+  >
+    <a-form-item
+      field="userPassword"
+      :label="$t('userManagement.userInfo.form.userPassword')"
+      :rules="[
+        {
+          required: true,
+          message: $t('userManagement.form.error.userPassword.required'),
+        },
+        {
+          minLength: 8,
+          message: $t('userManagement.form.error.userPassword.minLength8'),
+        },
+      ]"
+    >
+      <a-input-password
+        v-model="formData.userPassword"
+        :placeholder="$t('userManagement.userInfo.placeholder.userPassword')"
+      />
+    </a-form-item>
+    <a-form-item>
+      <a-space>
+        <a-button type="primary" @click="validate">
+          {{ $t('userSetting.save') }}
+        </a-button>
+        <a-button type="secondary" @click="reset">
+          {{ $t('userSetting.reset') }}
+        </a-button>
+      </a-space>
+    </a-form-item>
+  </a-form>
 </template>
 
-<script lang="ts" setup></script>
+<script lang="ts" setup>
+  import { ref } from 'vue';
+  import { FormInstance } from '@arco-design/web-vue/es/form';
+  import { BasicInfoModel } from '@/api/user-center';
+  import { updatePersonalPassword } from '@/api/user';
+  import { Message } from '@arco-design/web-vue';
+
+  const formRef = ref<FormInstance>();
+
+  const formData = ref<BasicInfoModel>({
+    userPassword: '',
+  });
+
+  const reset = async () => {
+    await formRef.value?.resetFields();
+  };
+
+  const handleEditUser = () => {
+    updatePersonalPassword(formData.value).then(() => {
+      Message.success('修改成功!');
+      reset();
+    });
+  };
+
+  const validate = async () => {
+    const res = await formRef.value?.validate();
+    if (!res) {
+      handleEditUser();
+    }
+  };
+</script>
 
 <style scoped lang="less">
-  :deep(.arco-list-item) {
-    border-bottom: none !important;
-    .arco-typography {
-      margin-bottom: 20px;
-    }
-    .arco-list-item-meta-avatar {
-      margin-bottom: 1px;
-    }
-    .arco-list-item-meta {
-      padding: 0;
-    }
-  }
-  :deep(.arco-list-item-meta-content) {
-    flex: 1;
-    border-bottom: 1px solid var(--color-neutral-3);
-
-    .arco-list-item-meta-description {
-      display: flex;
-      flex-flow: row;
-      justify-content: space-between;
-
-      .tip {
-        color: rgb(var(--gray-6));
-      }
-      .operation {
-        margin-right: 6px;
-      }
-    }
+  .form {
+    width: 540px;
+    margin: 0 auto;
   }
 </style>
