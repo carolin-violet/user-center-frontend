@@ -18,6 +18,7 @@ const useUserStore = defineStore('user', {
     phone: '',
     id: '',
     userRole: '',
+    userProfile: '',
     createTime: '',
   }),
 

@@ -221,6 +221,15 @@
           >
             {{ $t('userManagement.operation.delete') }}
           </a-button>
+          <a-button
+            v-permission="['admin']"
+            type="text"
+            size="small"
+            status="warning"
+            @click="handleUpdatePassword(record)"
+          >
+            {{ $t('userManagement.operation.updatePassword') }}
+          </a-button>
         </template>
       </a-table>
     </a-card>
@@ -239,7 +248,7 @@
   import Sortable from 'sortablejs';
   import { useRouter } from 'vue-router';
   import { Message, Modal } from '@arco-design/web-vue';
-
+  import { PageTypeEnum } from '@/enums'
   import { UserState } from '@/store/modules/user/types';
 
   type SizeProps = 'mini' | 'small' | 'medium' | 'large';
@@ -389,7 +398,12 @@
   };
 
   const handleAdd = () => {
-    router.push('/user_management/user_add');
+    router.push({
+      path: '/user_management/user_add',
+      query: {
+        pageType: PageTypeEnum.ADD
+      },
+    });
   };
 
   const handleEdit = (user: Partial<UserState>) => {
@@ -397,6 +411,17 @@
       path: '/user_management/user_edit',
       query: {
         id: user.id,
+        pageType: PageTypeEnum.EDIT
+      },
+    });
+  };
+
+  const handleUpdatePassword = (user: Partial<UserState>) => {
+    router.push({
+      path: '/user_management/user_edit',
+      query: {
+        id: user.id,
+        pageType: PageTypeEnum.UPDATE_PASSWORD
       },
     });
   };

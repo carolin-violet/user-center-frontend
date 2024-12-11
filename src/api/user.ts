@@ -78,6 +78,24 @@ export function updateUser(data: UserState) {
 }
 
 /**
+ * 更新用户密码
+ * @param data
+ * @returns
+ */
+export function updateUserPassword(data: UserState) {
+  return axios.post<Partial<UserState>>('/user/edit/password', data);
+}
+
+/**
+ * 添加用户信息
+ * @param data
+ * @returns
+ */
+export function addUser(data: UserState) {
+  return axios.post<Partial<UserState>>('/user/add', data);
+}
+
+/**
  * 根据id获取用户详情
  * @param userId
  * @returns

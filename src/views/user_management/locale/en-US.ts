@@ -3,6 +3,8 @@ export default {
   'menu.userManagement.list': 'User Table',
   'menu.userManagement.add': 'User Add',
   'menu.userManagement.edit': 'User Edit',
+  'menu.userManagement.updatePassword': 'Update Password',
+
   'userManagement.form.userName': 'Set userName',
   'userManagement.form.userName.placeholder': 'Please enter User Name',
   'userManagement.form.userAccount': 'Set userAccount',
@@ -27,6 +29,7 @@ export default {
   'userManagement.operation.download': 'Download',
   'userManagement.operation.edit': 'edit',
   'userManagement.operation.delete': 'delete',
+  'userManagement.operation.updatePassword': 'updatePassword',
   // columns
   'userManagement.columns.index': '#',
   'userManagement.columns.userAccount': 'userAccount',
@@ -50,6 +53,8 @@ export default {
 
   // 创建编辑页面
   'userManagement.userInfo.form.userName': 'userName',
+  'userManagement.userInfo.form.userAccount': 'userAccount',
+  'userManagement.userInfo.form.userPassword': 'userPassword',
   'userManagement.userInfo.form.userProfile': 'userProfile',
   'userManagement.userInfo.form.userAvatar': 'userAvatar',
   'userManagement.userInfo.form.userRole': 'userRole',
@@ -57,11 +62,18 @@ export default {
   'userManagement.userInfo.form.phone': 'phone',
   // 表单占位信息
   'userManagement.userInfo.placeholder.userName': 'Please Set userName',
+  'userManagement.userInfo.placeholder.userAccount': 'Please Set userAccount',
+  'userManagement.userInfo.placeholder.userPassword': 'Please Set userPassword',
   'userManagement.userInfo.placeholder.userProfile': 'Please Set userProfile',
   'userManagement.userInfo.placeholder.userAvatar': 'Please Set userAvatar',
   'userManagement.userInfo.placeholder.userRole': 'Please Set userRole',
   'userManagement.userInfo.placeholder.email': 'Please Set email',
   'userManagement.userInfo.placeholder.phone': 'Please Set phone',
   // 表单校验错误提示
-  'userManagement.form.error.userName.required': 'Please Set userName',
+  'userManagement.form.error.userAccount.required': 'Please Set userAccount',
+  'userManagement.form.error.userRole.required': 'Please Select userRole',
+  'userManagement.form.error.userPassword.required':
+    'Please Select userPassword',
+  'userManagement.form.error.userPassword.minLength8':
+    'userPassword length must be longer than 8',
 };

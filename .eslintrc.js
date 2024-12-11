@@ -66,5 +66,12 @@ module.exports = {
     'no-param-reassign': 0,
     'prefer-regex-literals': 0,
     'import/no-extraneous-dependencies': 0,
+
+    // 处理错误：'PageTypeEnum' is already declared in the upper scope on line 1 column 13.
+    'no-shadow': 'off',
+    '@typescript-eslint/no-shadow': ['error'],
+
+    // 处理错误：Prefer default export on a file with single export.eslint (import/prefer-default-export)
+    'import/prefer-default-export': 'off',
   },
 };

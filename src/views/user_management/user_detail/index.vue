@@ -1,16 +1,11 @@
 <template>
   <div class="container">
     <Breadcrumb
-      :items="[
-        'menu.userManagement',
-        isEdit ? 'menu.userManagement.edit' : 'menu.userManagement.add',
-      ]"
+      :items="['menu.userManagement', titleNameOptions[$route.query.pageType]]"
     />
     <a-card
       class="general-card"
-      :title="
-        $t(isEdit ? 'menu.userManagement.edit' : 'menu.userManagement.add')
-      "
+      :title="titleNameOptions[$route.query.pageType]"
     >
       <a-form
         ref="formRef"
@@ -20,14 +15,47 @@
         :wrapper-col-props="{ span: 16 }"
       >
         <a-form-item
-          field="userName"
-          :label="$t('userManagement.userInfo.form.userName')"
+          v-if="$route.query.pageType == PageTypeEnum.ADD"
+          field="userAccount"
+          :label="$t('userManagement.userInfo.form.userAccount')"
           :rules="[
             {
               required: true,
-              message: $t('userManagement.form.error.userName.required'),
+              message: $t('userManagement.form.error.userAccount.required'),
             },
           ]"
+        >
+          <a-input
+            v-model="formData.userAccount"
+            :placeholder="$t('userManagement.userInfo.placeholder.userAccount')"
+          />
+        </a-form-item>
+        <a-form-item
+          v-if="$route.query.pageType == PageTypeEnum.UPDATE_PASSWORD"
+          field="userPassword"
+          :label="$t('userManagement.userInfo.form.userPassword')"
+          :rules="[
+            {
+              required: true,
+              message: $t('userManagement.form.error.userPassword.required'),
+            },
+            {
+              minLength: 8,
+              message: $t('userManagement.form.error.userPassword.minLength8'),
+            },
+          ]"
+        >
+          <a-input
+            v-model="formData.userPassword"
+            :placeholder="
+              $t('userManagement.userInfo.placeholder.userPassword')
+            "
+          />
+        </a-form-item>
+        <a-form-item
+          v-if="$route.query.pageType != PageTypeEnum.UPDATE_PASSWORD"
+          field="userName"
+          :label="$t('userManagement.userInfo.form.userName')"
         >
           <a-input
             v-model="formData.userName"
@@ -35,15 +63,17 @@
           />
         </a-form-item>
         <a-form-item
-          field="userProfile"
-          :label="$t('userManagement.userInfo.form.userProfile')"
+          v-if="$route.query.pageType != PageTypeEnum.UPDATE_PASSWORD"
+          field="userAvatar"
+          :label="$t('userManagement.userInfo.form.userAvatar')"
         >
-          <a-textarea
-            v-model="formData.userProfile"
-            :placeholder="$t('userManagement.userInfo.placeholder.userProfile')"
+          <a-input
+            v-model="formData.userAvatar"
+            :placeholder="$t('userManagement.userInfo.placeholder.userAvatar')"
           />
         </a-form-item>
         <a-form-item
+          v-if="$route.query.pageType != PageTypeEnum.UPDATE_PASSWORD"
           field="email"
           :label="$t('userManagement.userInfo.form.email')"
         >
@@ -53,6 +83,7 @@
           />
         </a-form-item>
         <a-form-item
+          v-if="$route.query.pageType != PageTypeEnum.UPDATE_PASSWORD"
           field="phone"
           :label="$t('userManagement.userInfo.form.phone')"
         >
@@ -61,22 +92,38 @@
             :placeholder="$t('userManagement.userInfo.placeholder.phone')"
           />
         </a-form-item>
+        <a-form-item
+          v-if="$route.query.pageType != PageTypeEnum.UPDATE_PASSWORD"
+          field="userProfile"
+          :label="$t('userManagement.userInfo.form.userProfile')"
+        >
+          <a-textarea
+            v-model="formData.userProfile"
+            :placeholder="$t('userManagement.userInfo.placeholder.userProfile')"
+          />
+        </a-form-item>
 
         <a-form-item
-          field="countryRegion"
-          :label="$t('userSetting.basicInfo.form.label.countryRegion')"
+          v-if="$route.query.pageType != PageTypeEnum.UPDATE_PASSWORD"
+          field="userRole"
+          :label="$t('userManagement.userInfo.form.userRole')"
           :rules="[
             {
               required: true,
-              message: $t('userSetting.form.error.countryRegion.required'),
+              message: $t('userManagement.form.error.userRole.required'),
             },
           ]"
         >
           <a-select
-            v-model="formData.countryRegion"
-            :placeholder="$t('userSetting.basicInfo.placeholder.area')"
+            v-model="formData.userRole"
+            :placeholder="$t('userManagement.userInfo.placeholder.userRole')"
           >
-            <a-option value="China">中国</a-option>
+            <a-option value="user">{{
+              $t('userManagement.form.userRole.user')
+            }}</a-option>
+            <a-option value="ban">{{
+              $t('userManagement.form.userRole.ban')
+            }}</a-option>
           </a-select>
         </a-form-item>
         <a-form-item>
@@ -95,38 +142,99 @@
 </template>
 
 <script lang="ts" setup>
-  import { ref, computed } from 'vue';
+  import { ref, computed, onMounted } from 'vue';
   import { FormInstance } from '@arco-design/web-vue/es/form';
   import { BasicInfoModel } from '@/api/user-center';
-  import { useRoute } from 'vue-router';
+  import {
+    updateUser,
+    addUser,
+    getUserById,
+    updateUserPassword,
+  } from '@/api/user';
+  import { useRoute, useRouter } from 'vue-router';
+  import { useI18n } from 'vue-i18n';
+  import { Message } from '@arco-design/web-vue';
+  import { PageTypeEnum } from '@/enums';
 
+  const { t } = useI18n();
   const route = useRoute();
+  const router = useRouter();
 
   const formRef = ref<FormInstance>();
   const formData = ref<BasicInfoModel>({
+    userAccount: '',
+    userName: '',
+    userPassword: '',
+    userRole: '',
+    userProfile: '',
+    userAvatar: '',
     email: '',
-    nickname: '',
-    countryRegion: '',
-    area: '',
-    address: '',
-    profile: '',
+    phone: '',
   });
 
+  const titleNameOptions = {
+    [PageTypeEnum.EDIT]: t('menu.userManagement.edit'),
+    [PageTypeEnum.ADD]: t('menu.userManagement.add'),
+    [PageTypeEnum.UPDATE_PASSWORD]: t('menu.userManagement.updatePassword'),
+  };
+
   const isEdit = computed<boolean>(() => !!route.query.id);
+
+  const handleAddUser = () => {
+    addUser(formData.value).then(() => {
+      Message.success('添加成功!');
+      router.push('/user_management/user_list');
+    });
+  };
+
+  const handleEditUser = () => {
+    updateUser(formData.value).then(() => {
+      Message.success('修改成功!');
+      router.push('/user_management/user_list');
+    });
+  };
+
+  const handleEditPassword = () => {
+    updateUserPassword(formData.value).then(() => {
+      Message.success('修改成功!');
+      router.push('/user_management/user_list');
+    });
+  };
+
+  const handleGetUserById = () => {
+    getUserById(route.query.id).then((res) => {
+      formData.value = res.data;
+      formData.value.userPassword = '';
+    });
+  };
+
+  const submitStrategy = {
+    [PageTypeEnum.EDIT]: handleEditUser,
+    [PageTypeEnum.ADD]: handleAddUser,
+    [PageTypeEnum.UPDATE_PASSWORD]: handleEditPassword,
+  };
 
   const validate = async () => {
     const res = await formRef.value?.validate();
     if (!res) {
-      // do some thing
-      // you also can use html-type to submit
+      submitStrategy[route.query.pageType]();
     }
   };
   const reset = async () => {
     await formRef.value?.resetFields();
   };
+
+  onMounted(() => {
+    if (isEdit.value) {
+      handleGetUserById();
+    }
+  });
 </script>
 
 <style scoped lang="less">
+  .container {
+    padding: 0 20px 20px 20px;
+  }
   .form {
     width: 540px;
     margin: 0 auto;

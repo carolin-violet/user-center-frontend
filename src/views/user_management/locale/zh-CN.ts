@@ -4,6 +4,7 @@ export default {
   'menu.userManagement.list': '用户列表',
   'menu.userManagement.add': '添加用户',
   'menu.userManagement.edit': '编辑用户',
+  'menu.userManagement.updatePassword': '修改密码',
   // 列表页
   'userManagement.form.userName': '用户昵称',
   'userManagement.form.userName.placeholder': '请输入用户昵称',
@@ -23,11 +24,13 @@ export default {
   'userManagement.form.search': '查询',
   'userManagement.form.reset': '重置',
   'userManagement.form.selectDefault': '全部',
+  // 操作
   'userManagement.operation.create': '新建',
   'userManagement.operation.import': '批量导入',
   'userManagement.operation.download': '下载',
   'userManagement.operation.edit': '编辑',
   'userManagement.operation.delete': '删除',
+  'userManagement.operation.updatePassword': '修改密码',
   // columns
   'userManagement.columns.index': '#',
   'userManagement.columns.userAccount': '账号',
@@ -52,6 +55,8 @@ export default {
 
   // 创建编辑页面
   // 表单信息
+  'userManagement.userInfo.form.userAccount': '用户账号',
+  'userManagement.userInfo.form.userPassword': '用户密码',
   'userManagement.userInfo.form.userName': '用户昵称',
   'userManagement.userInfo.form.userProfile': '用户简介',
   'userManagement.userInfo.form.userAvatar': '用户头像',
@@ -59,6 +64,8 @@ export default {
   'userManagement.userInfo.form.email': '邮箱',
   'userManagement.userInfo.form.phone': '电话',
   // 表单占位信息
+  'userManagement.userInfo.placeholder.userAccount': '请输入用户账号',
+  'userManagement.userInfo.placeholder.userPassword': '请输入用户密码',
   'userManagement.userInfo.placeholder.userName': '请输入用户昵称',
   'userManagement.userInfo.placeholder.userProfile': '请输入用户简介',
   'userManagement.userInfo.placeholder.userAvatar': '请上传用户头像',
@@ -66,5 +73,8 @@ export default {
   'userManagement.userInfo.placeholder.email': '请输入邮箱',
   'userManagement.userInfo.placeholder.phone': '请输入电话',
   // 表单校验错误提示
-  'userManagement.form.error.userName.required': '请输入用户昵称',
+  'userManagement.form.error.userAccount.required': '请输入用户账号',
+  'userManagement.form.error.userRole.required': '请选择用户角色',
+  'userManagement.form.error.userPassword.required': '请输入用户密码',
+  'userManagement.form.error.userPassword.minLength8': '密码长度需大于等于8',
 };
