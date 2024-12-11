@@ -9,8 +9,8 @@ const USER: AppRouteRecordRaw = {
     locale: 'menu.user',
     icon: 'icon-user',
     requiresAuth: true,
-    order: 7,
-    roles: ['ban'],
+    order: 3,
+    roles: ['user'],
   },
   children: [
     {

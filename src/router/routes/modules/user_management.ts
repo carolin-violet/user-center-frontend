@@ -9,7 +9,7 @@ const USER_MANAGEMENT: AppRouteRecordRaw = {
     locale: 'menu.user_management',
     requiresAuth: true,
     icon: 'icon-list',
-    order: 3,
+    order: 2,
     roles: ['admin'],
   },
   children: [
