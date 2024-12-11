@@ -2,7 +2,7 @@
   <div class="container">
     <div class="content">
       <div class="content-inner">
-        <LoginForm />
+        <RegisterForm />
       </div>
       <div class="footer">
         <Footer />
@@ -13,14 +13,15 @@
 
 <script lang="ts" setup>
   import Footer from '@/components/footer/index.vue';
-  import LoginForm from './components/login-form.vue';
+  import RegisterForm from './components/register-form.vue';
 </script>
 
 <style lang="less" scoped>
   .container {
     display: flex;
     height: 100vh;
-    background-image: url('@/assets/images/bg1.jpg');
+
+    background-image: url('@/assets/images/bg2.jpg');
     background-position: 50% 50%;
     background-size: cover;
     background-repeat: no-repeat;
