@@ -27,7 +27,7 @@
     </a-form-item>
     <a-form-item>
       <a-space>
-        <a-button type="primary" @click="validate">
+        <a-button type="primary" :loading="loading" @click="validate">
           {{ $t('userSetting.save') }}
         </a-button>
         <a-button type="secondary" @click="reset">
@@ -43,10 +43,11 @@
   import { FormInstance } from '@arco-design/web-vue/es/form';
   import { BasicInfoModel } from '@/api/user-center';
   import { updatePersonalPassword } from '@/api/user';
+  import useLoading from '@/hooks/loading';
   import { Message } from '@arco-design/web-vue';
 
+  const { loading, setLoading } = useLoading();
   const formRef = ref<FormInstance>();
-
   const formData = ref<BasicInfoModel>({
     userPassword: '',
   });
@@ -56,10 +57,15 @@
   };
 
   const handleEditUser = () => {
-    updatePersonalPassword(formData.value).then(() => {
-      Message.success('修改成功!');
-      reset();
-    });
+    setLoading(true);
+    updatePersonalPassword(formData.value)
+      .then(() => {
+        Message.success('修改成功!');
+        reset();
+      })
+      .finally(() => {
+        setLoading(false);
+      });
   };
 
   const validate = async () => {

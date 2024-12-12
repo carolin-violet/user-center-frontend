@@ -128,7 +128,7 @@
         </a-form-item>
         <a-form-item>
           <a-space>
-            <a-button type="primary" @click="validate">
+            <a-button type="primary" :loading="loading" @click="validate">
               {{ $t('userSetting.save') }}
             </a-button>
             <a-button type="secondary" @click="reset">
@@ -153,9 +153,11 @@
   } from '@/api/user';
   import { useRoute, useRouter } from 'vue-router';
   import { useI18n } from 'vue-i18n';
+  import useLoading from '@/hooks/loading';
   import { Message } from '@arco-design/web-vue';
   import { PageTypeEnum } from '@/enums';
 
+  const { loading, setLoading } = useLoading();
   const { t } = useI18n();
   const route = useRoute();
   const router = useRouter();
@@ -181,24 +183,39 @@
   const isEdit = computed<boolean>(() => !!route.query.id);
 
   const handleAddUser = () => {
-    addUser(formData.value).then(() => {
-      Message.success('添加成功!');
-      router.push('/user_management/user_list');
-    });
+    setLoading(true);
+    addUser(formData.value)
+      .then(() => {
+        Message.success('添加成功!');
+        router.push('/user_management/user_list');
+      })
+      .finally(() => {
+        setLoading(false);
+      });
   };
 
   const handleEditUser = () => {
-    updateUser(formData.value).then(() => {
-      Message.success('修改成功!');
-      router.push('/user_management/user_list');
-    });
+    setLoading(true);
+    updateUser(formData.value)
+      .then(() => {
+        Message.success('修改成功!');
+        router.push('/user_management/user_list');
+      })
+      .finally(() => {
+        setLoading(false);
+      });
   };
 
   const handleEditPassword = () => {
-    updateUserPassword(formData.value).then(() => {
-      Message.success('修改成功!');
-      router.push('/user_management/user_list');
-    });
+    setLoading(true);
+    updateUserPassword(formData.value)
+      .then(() => {
+        Message.success('修改成功!');
+        router.push('/user_management/user_list');
+      })
+      .finally(() => {
+        setLoading(false);
+      });
   };
 
   const handleGetUserById = () => {
