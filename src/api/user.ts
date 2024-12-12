@@ -40,6 +40,15 @@ export function login(data: LoginData) {
 }
 
 /**
+ * 注册
+ * @param data
+ * @returns
+ */
+export function register(data: Partial<UserState>) {
+  return axios.post<number>('/user/register', data);
+}
+
+/**
  * 退出登录
  * @returns
  */

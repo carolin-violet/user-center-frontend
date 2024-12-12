@@ -1,25 +1,27 @@
 <template>
-  <div class="login-form-wrapper">
-    <div class="login-form-title">{{ $t('login.form.title') }}</div>
-    <div class="login-form-error-msg">{{ errorMessage }}</div>
+  <div class="register-form-wrapper">
+    <div class="register-form-title">{{ $t('register.form.title') }}</div>
+    <div class="register-form-error-msg">{{ errorMessage }}</div>
     <a-form
-      ref="loginForm"
+      ref="registerForm"
       :model="userInfo"
-      class="login-form"
-      layout="vertical"
+      class="register-form"
       @submit="handleSubmit"
     >
       <a-form-item
         field="userAccount"
         :rules="[
-          { required: true, message: $t('login.form.userAccount.errMsg') },
+          {
+            required: true,
+            message: $t('register.form.userAccount.error.required'),
+          },
         ]"
         :validate-trigger="['change', 'blur']"
         hide-label
       >
         <a-input
           v-model="userInfo.userAccount"
-          :placeholder="$t('login.form.userAccount.placeholder')"
+          :placeholder="$t('register.form.userAccount.placeholder')"
         >
           <template #prefix>
             <icon-user />
@@ -29,14 +31,53 @@
       <a-form-item
         field="userPassword"
         :rules="[
-          { required: true, message: $t('login.form.userPassword.errMsg') },
+          {
+            required: true,
+            message: $t('register.form.userPassword.error.required'),
+          },
+          {
+            minLength: 8,
+            message: $t('register.form.userPassword.error.minLength8'),
+          },
         ]"
         :validate-trigger="['change', 'blur']"
         hide-label
       >
         <a-input-password
           v-model="userInfo.userPassword"
-          :placeholder="$t('login.form.userPassword.placeholder')"
+          :placeholder="$t('register.form.userPassword.placeholder')"
+          allow-clear
+        >
+          <template #prefix>
+            <icon-lock />
+          </template>
+        </a-input-password>
+      </a-form-item>
+      <a-form-item
+        field="checkPassword"
+        :rules="[
+          {
+            required: true,
+            message: $t('register.form.checkPassword.error.required'),
+          },
+          {
+            validator: (value, callback) => {
+              value === userInfo.userPassword
+                ? callback()
+                : callback(
+                    new Error(
+                      $t('register.form.checkPassword.error.matchPassword')
+                    )
+                  );
+            },
+          },
+        ]"
+        :validate-trigger="['change', 'blur']"
+        hide-label
+      >
+        <a-input-password
+          v-model="userInfo.checkPassword"
+          :placeholder="$t('register.form.checkPassword.placeholder')"
           allow-clear
         >
           <template #prefix>
@@ -45,21 +86,8 @@
         </a-input-password>
       </a-form-item>
       <a-space :size="16" direction="vertical">
-        <div class="login-form-password-actions">
-          <a-checkbox
-            checked="rememberPassword"
-            :model-value="loginConfig.rememberPassword"
-            @change="setRememberPassword as any"
-          >
-            {{ $t('login.form.rememberPassword') }}
-          </a-checkbox>
-          <a-link>{{ $t('login.form.forgetPassword') }}</a-link>
-        </div>
         <a-button type="primary" html-type="submit" long :loading="loading">
-          {{ $t('login.form.login') }}
-        </a-button>
-        <a-button type="text" long class="login-form-register-btn">
-          {{ $t('login.form.register') }}
+          {{ $t('register.form.submit') }}
         </a-button>
       </a-space>
     </a-form>
@@ -67,30 +95,26 @@
 </template>
 
 <script lang="ts" setup>
-  import { ref, reactive } from 'vue';
+  import { ref } from 'vue';
   import { useRouter } from 'vue-router';
   import { Message } from '@arco-design/web-vue';
   import { ValidatedError } from '@arco-design/web-vue/es/form/interface';
-  import { useI18n } from 'vue-i18n';
-  import { useStorage } from '@vueuse/core';
-  import { useUserStore } from '@/store';
   import useLoading from '@/hooks/loading';
-  import type { LoginData } from '@/api/user';
+  import { register } from '@/api/user';
 
   const router = useRouter();
-  const { t } = useI18n();
   const errorMessage = ref('');
   const { loading, setLoading } = useLoading();
-  const userStore = useUserStore();
 
-  const loginConfig = useStorage('login-config', {
-    rememberPassword: true,
-    userAccount: 'admin', // 演示默认值
-    userPassword: 'admin', // demo default value
-  });
-  const userInfo = reactive({
-    userAccount: loginConfig.value.userAccount,
-    userPassword: loginConfig.value.userPassword,
+  const userInfo = ref({
+    userAccount: '',
+    userName: '',
+    userPassword: '',
+    userRole: '',
+    userProfile: '',
+    userAvatar: '',
+    email: '',
+    phone: '',
   });
 
   const handleSubmit = async ({
@@ -103,36 +127,20 @@
     if (loading.value) return;
     if (!errors) {
       setLoading(true);
-      try {
-        await userStore.login(values as LoginData);
-        const { redirect, ...othersQuery } = router.currentRoute.value.query;
-        router.push({
-          name: (redirect as string) || 'Workplace',
-          query: {
-            ...othersQuery,
-          },
+      register({ ...values })
+        .then(() => {
+          Message.success('注册成功');
+          router.push('/login');
+        })
+        .finally(() => {
+          setLoading(false);
         });
-        Message.success(t('login.form.login.success'));
-        const { rememberPassword } = loginConfig.value;
-        const { userAccount, userPassword } = values;
-        // 实际生产环境需要进行加密存储。
-        // The actual production environment requires encrypted storage.
-        loginConfig.value.userAccount = rememberPassword ? userAccount : '';
-        loginConfig.value.userPassword = rememberPassword ? userPassword : '';
-      } catch (err) {
-        errorMessage.value = (err as Error).message;
-      } finally {
-        setLoading(false);
-      }
     }
-  };
-  const setRememberPassword = (value: boolean) => {
-    loginConfig.value.rememberPassword = value;
   };
 </script>
 
 <style lang="less" scoped>
-  .login-form {
+  .register-form {
     &-wrapper {
       width: 320px;
     }

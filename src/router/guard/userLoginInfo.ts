@@ -29,7 +29,7 @@ export default function setupUserLoginInfoGuard(router: Router) {
       }
       next();
     } else {
-      if (to.name === 'login') {
+      if (['login', 'register'].includes(to.name as string)) {
         next();
         return;
       }
