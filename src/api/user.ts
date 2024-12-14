@@ -7,27 +7,17 @@ export interface LoginData {
   userPassword: string;
 }
 
-export interface LoginRes {
-  token: string;
-  id: string;
-  userAvatar: string;
-  userName: string;
-  userProfile: string;
-  userRole: string;
-  phone: string;
-  email: string;
-  createTime: string;
-}
-
 export interface DeleteData {
   id: string;
 }
 
 export interface UserQueryRequest {
-  id: string;
+  id?: string;
   userName?: string;
   userProfile?: string;
-  userRole: string;
+  userRole?: string;
+  current?: string;
+  pageSize?: string;
 }
 
 /**
@@ -36,7 +26,7 @@ export interface UserQueryRequest {
  * @returns
  */
 export function login(data: LoginData) {
-  return axios.post<Partial<LoginRes>>('/user/login', data);
+  return axios.post<Partial<UserState>>('/user/login', data);
 }
 
 /**
@@ -53,7 +43,7 @@ export function register(data: Partial<UserState>) {
  * @returns
  */
 export function logout() {
-  return axios.post<Partial<LoginRes>>('/user/logout');
+  return axios.post<Partial<UserState>>('/user/logout');
 }
 
 /**
@@ -73,8 +63,8 @@ export function getMenuList() {
  * @param data
  * @returns
  */
-export function deleteUser(data: DeleteData) {
-  return axios.post<boolean>('/user/delete', data);
+export function deleteUser(id: number) {
+  return axios.delete<boolean>(`/user/delete/${id}`);
 }
 
 /**
@@ -83,7 +73,7 @@ export function deleteUser(data: DeleteData) {
  * @returns
  */
 export function updateUser(data: UserState) {
-  return axios.post<Partial<UserState>>('/user/update', data);
+  return axios.put<Partial<UserState>>('/user/update', data);
 }
 
 /**
@@ -92,7 +82,7 @@ export function updateUser(data: UserState) {
  * @returns
  */
 export function updateUserPassword(data: UserState) {
-  return axios.post<Partial<UserState>>('/user/edit/password', data);
+  return axios.put<Partial<UserState>>('/user/edit/password', data);
 }
 
 /**
@@ -110,11 +100,7 @@ export function addUser(data: UserState) {
  * @returns
  */
 export function getUserById(userId: string) {
-  return axios.get<Partial<UserState>>('/user/get', {
-    params: {
-      id: userId,
-    },
-  });
+  return axios.get<Partial<UserState>>(`/user/get/${userId}`);
 }
 
 /**
@@ -122,8 +108,10 @@ export function getUserById(userId: string) {
  * @param data
  * @returns
  */
-export function listUserByPage(data: UserQueryRequest) {
-  return axios.post<Partial<UserState>[]>('/user/list/page', data);
+export function listUserByPage(params: UserQueryRequest) {
+  return axios.get<Partial<UserState>[]>('/user/list/page', {
+    params,
+  });
 }
 
 /**
@@ -132,7 +120,7 @@ export function listUserByPage(data: UserQueryRequest) {
  * @returns
  */
 export function updatePersonalInfo(data: UserState) {
-  return axios.post<boolean>('/user/update/my', data);
+  return axios.put<boolean>('/user/update/my', data);
 }
 
 /**
@@ -141,5 +129,5 @@ export function updatePersonalInfo(data: UserState) {
  * @returns
  */
 export function updatePersonalPassword(data: UserState) {
-  return axios.post<boolean>('/user/edit/password/my', data);
+  return axios.put<boolean>('/user/edit/password/my', data);
 }

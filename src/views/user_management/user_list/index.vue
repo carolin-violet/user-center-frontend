@@ -248,7 +248,7 @@
   import Sortable from 'sortablejs';
   import { useRouter } from 'vue-router';
   import { Message, Modal } from '@arco-design/web-vue';
-  import { PageTypeEnum } from '@/enums'
+  import { PageTypeEnum } from '@/enums';
   import { UserState } from '@/store/modules/user/types';
 
   type SizeProps = 'mini' | 'small' | 'medium' | 'large';
@@ -401,7 +401,7 @@
     router.push({
       path: '/user_management/user_add',
       query: {
-        pageType: PageTypeEnum.ADD
+        pageType: PageTypeEnum.ADD,
       },
     });
   };
@@ -411,7 +411,7 @@
       path: '/user_management/user_edit',
       query: {
         id: user.id,
-        pageType: PageTypeEnum.EDIT
+        pageType: PageTypeEnum.EDIT,
       },
     });
   };
@@ -421,7 +421,7 @@
       path: '/user_management/user_edit',
       query: {
         id: user.id,
-        pageType: PageTypeEnum.UPDATE_PASSWORD
+        pageType: PageTypeEnum.UPDATE_PASSWORD,
       },
     });
   };
@@ -431,9 +431,7 @@
       title: '删除确认',
       content: '确认删除该账户吗?',
       onOk: () => {
-        deleteUser({
-          id: user.id,
-        }).then(() => {
+        deleteUser(user.id).then(() => {
           Message.success('删除成功!');
           search();
         });
