@@ -1,15 +1,16 @@
+import { PageResponse } from '@/types/global';
 import axios from 'axios';
 import type { RouteRecordNormalized } from 'vue-router';
-import { UserState } from '@/store/modules/user/types';
 
 export interface LoginData {
   userAccount: string;
   userPassword: string;
 }
 
-export interface LoginRes {
+export interface UserState {
   token: string;
   id: string;
+  userAccount: string;
   userAvatar: string;
   userName: string;
   userProfile: string;
@@ -17,6 +18,7 @@ export interface LoginRes {
   phone: string;
   email: string;
   createTime: string;
+  userPassword: string;
 }
 
 export interface DeleteData {
@@ -30,13 +32,16 @@ export interface UserQueryRequest {
   userRole: string;
 }
 
+const prefix: string = import.meta.env.VITE_API_USER_CENTER_PREFIX;
+// const prefix: string = import.meta.env.VITE_API_NAVIGATION_PREFIX;
+
 /**
  * 登录
  * @param data
  * @returns
  */
 export function login(data: LoginData) {
-  return axios.post<Partial<LoginRes>>('/user/login', data);
+  return axios.post<Partial<UserState>>(`${prefix}/user/login`, data);
 }
 
 /**
@@ -45,7 +50,7 @@ export function login(data: LoginData) {
  * @returns
  */
 export function register(data: Partial<UserState>) {
-  return axios.post<number>('/user/register', data);
+  return axios.post<number>(`${prefix}/user/register`, data);
 }
 
 /**
@@ -53,7 +58,7 @@ export function register(data: Partial<UserState>) {
  * @returns
  */
 export function logout() {
-  return axios.post<Partial<LoginRes>>('/user/logout');
+  return axios.post<Partial<UserState>>(`${prefix}/user/logout`);
 }
 
 /**
@@ -61,11 +66,29 @@ export function logout() {
  * @returns
  */
 export function getUserInfo() {
-  return axios.get<Partial<UserState>>('/user/info');
+  return axios.get<Partial<UserState>>(`${prefix}/user/info`);
 }
 
 export function getMenuList() {
-  return axios.post<RouteRecordNormalized[]>('/user/menu');
+  return axios.get<RouteRecordNormalized[]>(`${prefix}/user/menu`);
+}
+
+/**
+ * 用户更新自己的信息
+ * @param data
+ * @returns
+ */
+export function updatePersonalInfo(data: Partial<UserState>) {
+  return axios.put<boolean>(`${prefix}/user/update/my`, data);
+}
+
+/**
+ * 用户更新自己的密码
+ * @param data
+ * @returns
+ */
+export function updatePersonalPassword(data: Partial<UserState>) {
+  return axios.put<boolean>(`${prefix}/user/edit/password/my`, data);
 }
 
 /**
@@ -74,7 +97,7 @@ export function getMenuList() {
  * @returns
  */
 export function deleteUser(data: DeleteData) {
-  return axios.post<boolean>('/user/delete', data);
+  return axios.post<boolean>(`${prefix}/user/delete`, data);
 }
 
 /**
@@ -82,8 +105,8 @@ export function deleteUser(data: DeleteData) {
  * @param data
  * @returns
  */
-export function updateUser(data: UserState) {
-  return axios.post<Partial<UserState>>('/user/update', data);
+export function updateUser(data: Partial<UserState>) {
+  return axios.post<Partial<UserState>>(`${prefix}/user/update`, data);
 }
 
 /**
@@ -91,8 +114,8 @@ export function updateUser(data: UserState) {
  * @param data
  * @returns
  */
-export function updateUserPassword(data: UserState) {
-  return axios.post<Partial<UserState>>('/user/edit/password', data);
+export function updateUserPassword(data: Partial<UserState>) {
+  return axios.post<Partial<UserState>>(`${prefix}/user/edit/password`, data);
 }
 
 /**
@@ -100,8 +123,8 @@ export function updateUserPassword(data: UserState) {
  * @param data
  * @returns
  */
-export function addUser(data: UserState) {
-  return axios.post<Partial<UserState>>('/user/add', data);
+export function addUser(data: Partial<UserState>) {
+  return axios.post<Partial<UserState>>(`${prefix}/user/add`, data);
 }
 
 /**
@@ -109,8 +132,8 @@ export function addUser(data: UserState) {
  * @param userId
  * @returns
  */
-export function getUserById(userId: string) {
-  return axios.get<Partial<UserState>>('/user/get', {
+export function getUserById(userId: number) {
+  return axios.get<Partial<UserState>>(`${prefix}/user/get`, {
     params: {
       id: userId,
     },
@@ -123,23 +146,5 @@ export function getUserById(userId: string) {
  * @returns
  */
 export function listUserByPage(data: UserQueryRequest) {
-  return axios.post<Partial<UserState>[]>('/user/list/page', data);
-}
-
-/**
- * 用户更新自己的信息
- * @param data
- * @returns
- */
-export function updatePersonalInfo(data: UserState) {
-  return axios.post<boolean>('/user/update/my', data);
-}
-
-/**
- * 用户更新自己的密码
- * @param data
- * @returns
- */
-export function updatePersonalPassword(data: UserState) {
-  return axios.post<boolean>('/user/edit/password/my', data);
+  return axios.post<PageResponse<UserState>>(`${prefix}/user/list/page`, data);
 }

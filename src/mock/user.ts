@@ -14,7 +14,7 @@ setupMock({
     // 用户信息
     Mock.mock(new RegExp('/api/user/info'), () => {
       if (isLogin()) {
-        const role = window.localStorage.getItem('userRole') || 'admin';
+        const userRole = window.localStorage.getItem('userRole') || 'admin';
         return successResponseWrap({
           name: 'admin',
           avatar:
@@ -32,7 +32,7 @@ setupMock({
           registrationDate: '2013-05-10 12:10:00',
           accountId: '15012312300',
           certification: 1,
-          role,
+          userRole,
         });
       }
       return failResponseWrap(null, '未登录', 50008);

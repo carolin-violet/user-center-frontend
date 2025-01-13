@@ -67,20 +67,20 @@
 <script lang="ts" setup>
   import { ref } from 'vue';
   import { FormInstance } from '@arco-design/web-vue/es/form';
-  import { BasicInfoModel } from '@/api/user-center';
-  import { updatePersonalInfo } from '@/api/user';
+  import { UserState, updatePersonalInfo } from '@/api/user';
+
   import useLoading from '@/hooks/loading';
   import { Message } from '@arco-design/web-vue';
 
   const { loading, setLoading } = useLoading();
 
   const formRef = ref<FormInstance>();
-  const formData = ref<BasicInfoModel>({
+  const formData = ref<Partial<UserState>>({
     userName: '',
     userProfile: '',
     userAvatar: '',
     email: '',
-    phone: '',
+    phone: undefined,
   });
 
   const handleEditUser = () => {

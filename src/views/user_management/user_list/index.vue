@@ -55,7 +55,7 @@
                   :label="$t('userManagement.form.createTime')"
                 >
                   <a-range-picker
-                    v-model="formModel.createTime"
+                    v-model="formModel.createTime as any"
                     style="width: 100%"
                   />
                 </a-form-item>
@@ -248,7 +248,7 @@
   import Sortable from 'sortablejs';
   import { useRouter } from 'vue-router';
   import { Message, Modal } from '@arco-design/web-vue';
-  import { PageTypeEnum } from '@/enums'
+  import { PageTypeEnum } from '@/enums';
   import { UserState } from '@/store/modules/user/types';
 
   type SizeProps = 'mini' | 'small' | 'medium' | 'large';
@@ -258,18 +258,21 @@
 
   const generateFormModel = () => {
     return {
-      number: '',
-      name: '',
-      contentType: '',
-      filterType: '',
-      createdTime: [],
-      status: '',
+      token: '',
+      id: undefined,
+      userAvatar: '',
+      userName: '',
+      userProfile: '',
+      userRole: '',
+      phone: undefined,
+      email: '',
+      createTime: '',
     };
   };
   const { loading, setLoading } = useLoading(true);
   const { t } = useI18n();
   const renderData = ref<any[]>([]);
-  const formModel = ref(generateFormModel());
+  const formModel = ref<Partial<UserState>>(generateFormModel());
   const cloneColumns = ref<Column[]>([]);
   const showColumns = ref<Column[]>([]);
 
@@ -401,7 +404,7 @@
     router.push({
       path: '/user_management/user_add',
       query: {
-        pageType: PageTypeEnum.ADD
+        pageType: PageTypeEnum.ADD,
       },
     });
   };
@@ -411,7 +414,7 @@
       path: '/user_management/user_edit',
       query: {
         id: user.id,
-        pageType: PageTypeEnum.EDIT
+        pageType: PageTypeEnum.EDIT,
       },
     });
   };
@@ -421,12 +424,12 @@
       path: '/user_management/user_edit',
       query: {
         id: user.id,
-        pageType: PageTypeEnum.UPDATE_PASSWORD
+        pageType: PageTypeEnum.UPDATE_PASSWORD,
       },
     });
   };
 
-  const handleDelete = (user: Partial<UserState>) => {
+  const handleDelete = (user: UserState) => {
     Modal.open({
       title: '删除确认',
       content: '确认删除该账户吗?',

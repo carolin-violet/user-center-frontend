@@ -11,7 +11,7 @@ import { UserState } from './types';
 import useAppStore from '../app';
 
 const useUserStore = defineStore('user', {
-  state: (): UserState => ({
+  state: (): Partial<UserState> => ({
     userName: undefined,
     userAvatar: undefined,
     email: '',
@@ -23,7 +23,7 @@ const useUserStore = defineStore('user', {
   }),
 
   getters: {
-    userInfo(state: UserState): UserState {
+    userInfo(state: Partial<UserState>): Partial<UserState> {
       return { ...state };
     },
   },

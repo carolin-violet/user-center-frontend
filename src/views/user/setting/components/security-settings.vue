@@ -41,15 +41,15 @@
 <script lang="ts" setup>
   import { ref } from 'vue';
   import { FormInstance } from '@arco-design/web-vue/es/form';
-  import { BasicInfoModel } from '@/api/user-center';
-  import { updatePersonalPassword } from '@/api/user';
+  import { UserState, updatePersonalPassword } from '@/api/user';
+
   import useLoading from '@/hooks/loading';
   import { Message } from '@arco-design/web-vue';
 
   const { loading, setLoading } = useLoading();
   const formRef = ref<FormInstance>();
-  const formData = ref<BasicInfoModel>({
-    userPassword: '',
+  const formData = ref<Partial<UserState>>({
+    userPassword: undefined,
   });
 
   const reset = async () => {

@@ -1,11 +1,14 @@
 <template>
   <div class="container">
     <Breadcrumb
-      :items="['menu.userManagement', titleNameOptions[$route.query.pageType]]"
+      :items="[
+        'menu.userManagement',
+        titleNameOptions[Number($route.query.pageType)],
+      ]"
     />
     <a-card
       class="general-card"
-      :title="titleNameOptions[$route.query.pageType]"
+      :title="titleNameOptions[Number($route.query.pageType)]"
     >
       <a-form
         ref="formRef"
@@ -15,7 +18,7 @@
         :wrapper-col-props="{ span: 16 }"
       >
         <a-form-item
-          v-if="$route.query.pageType == PageTypeEnum.ADD"
+          v-if="Number($route.query.pageType) === PageTypeEnum.ADD"
           field="userAccount"
           :label="$t('userManagement.userInfo.form.userAccount')"
           :rules="[
@@ -31,7 +34,7 @@
           />
         </a-form-item>
         <a-form-item
-          v-if="$route.query.pageType == PageTypeEnum.UPDATE_PASSWORD"
+          v-if="Number($route.query.pageType) === PageTypeEnum.UPDATE_PASSWORD"
           field="userPassword"
           :label="$t('userManagement.userInfo.form.userPassword')"
           :rules="[
@@ -53,7 +56,7 @@
           />
         </a-form-item>
         <a-form-item
-          v-if="$route.query.pageType != PageTypeEnum.UPDATE_PASSWORD"
+          v-if="Number($route.query.pageType) !== PageTypeEnum.UPDATE_PASSWORD"
           field="userName"
           :label="$t('userManagement.userInfo.form.userName')"
         >
@@ -63,7 +66,7 @@
           />
         </a-form-item>
         <a-form-item
-          v-if="$route.query.pageType != PageTypeEnum.UPDATE_PASSWORD"
+          v-if="Number($route.query.pageType) !== PageTypeEnum.UPDATE_PASSWORD"
           field="userAvatar"
           :label="$t('userManagement.userInfo.form.userAvatar')"
         >
@@ -73,7 +76,7 @@
           />
         </a-form-item>
         <a-form-item
-          v-if="$route.query.pageType != PageTypeEnum.UPDATE_PASSWORD"
+          v-if="Number($route.query.pageType) !== PageTypeEnum.UPDATE_PASSWORD"
           field="email"
           :label="$t('userManagement.userInfo.form.email')"
         >
@@ -83,7 +86,7 @@
           />
         </a-form-item>
         <a-form-item
-          v-if="$route.query.pageType != PageTypeEnum.UPDATE_PASSWORD"
+          v-if="Number($route.query.pageType) !== PageTypeEnum.UPDATE_PASSWORD"
           field="phone"
           :label="$t('userManagement.userInfo.form.phone')"
         >
@@ -93,7 +96,7 @@
           />
         </a-form-item>
         <a-form-item
-          v-if="$route.query.pageType != PageTypeEnum.UPDATE_PASSWORD"
+          v-if="Number($route.query.pageType) !== PageTypeEnum.UPDATE_PASSWORD"
           field="userProfile"
           :label="$t('userManagement.userInfo.form.userProfile')"
         >
@@ -104,7 +107,7 @@
         </a-form-item>
 
         <a-form-item
-          v-if="$route.query.pageType != PageTypeEnum.UPDATE_PASSWORD"
+          v-if="Number($route.query.pageType) !== PageTypeEnum.UPDATE_PASSWORD"
           field="userRole"
           :label="$t('userManagement.userInfo.form.userRole')"
           :rules="[
@@ -144,13 +147,14 @@
 <script lang="ts" setup>
   import { ref, computed, onMounted } from 'vue';
   import { FormInstance } from '@arco-design/web-vue/es/form';
-  import { BasicInfoModel } from '@/api/user-center';
   import {
+    UserState,
     updateUser,
     addUser,
     getUserById,
     updateUserPassword,
   } from '@/api/user';
+
   import { useRoute, useRouter } from 'vue-router';
   import { useI18n } from 'vue-i18n';
   import useLoading from '@/hooks/loading';
@@ -163,7 +167,7 @@
   const router = useRouter();
 
   const formRef = ref<FormInstance>();
-  const formData = ref<BasicInfoModel>({
+  const formData = ref<Partial<UserState>>({
     userAccount: '',
     userName: '',
     userPassword: '',
@@ -174,7 +178,7 @@
     phone: '',
   });
 
-  const titleNameOptions = {
+  const titleNameOptions: Record<number, string> = {
     [PageTypeEnum.EDIT]: t('menu.userManagement.edit'),
     [PageTypeEnum.ADD]: t('menu.userManagement.add'),
     [PageTypeEnum.UPDATE_PASSWORD]: t('menu.userManagement.updatePassword'),
@@ -219,13 +223,13 @@
   };
 
   const handleGetUserById = () => {
-    getUserById(route.query.id).then((res) => {
+    getUserById(Number(route.query.id)).then((res) => {
       formData.value = res.data;
       formData.value.userPassword = '';
     });
   };
 
-  const submitStrategy = {
+  const submitStrategy: Record<number, any> = {
     [PageTypeEnum.EDIT]: handleEditUser,
     [PageTypeEnum.ADD]: handleAddUser,
     [PageTypeEnum.UPDATE_PASSWORD]: handleEditPassword,
@@ -234,7 +238,7 @@
   const validate = async () => {
     const res = await formRef.value?.validate();
     if (!res) {
-      submitStrategy[route.query.pageType]();
+      submitStrategy[Number(route.query.pageType)]();
     }
   };
   const reset = async () => {

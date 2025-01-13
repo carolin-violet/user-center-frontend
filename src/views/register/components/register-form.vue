@@ -67,7 +67,7 @@
                 : callback(
                     new Error(
                       $t('register.form.checkPassword.error.matchPassword')
-                    )
+                    ) as any
                   );
             },
           },
@@ -115,6 +115,7 @@
     userAvatar: '',
     email: '',
     phone: '',
+    checkPassword: '',
   });
 
   const handleSubmit = async ({

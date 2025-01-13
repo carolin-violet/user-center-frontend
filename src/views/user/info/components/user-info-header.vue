@@ -12,7 +12,7 @@
       </a-typography-title>
       <div class="user-msg">
         <a-space :size="18">
-          <div>
+          <!-- <div>
             <icon-user />
             <a-typography-text>{{ userInfo.jobName }}</a-typography-text>
           </div>
@@ -25,7 +25,7 @@
           <div>
             <icon-location />
             <a-typography-text>{{ userInfo.locationName }}</a-typography-text>
-          </div>
+          </div> -->
         </a-space>
       </div>
     </a-space>

@@ -38,7 +38,7 @@ export default {
   'userManagement.columns.userAvatar': 'userAvatar',
   'userManagement.columns.phone': 'phone',
   'userManagement.columns.email': 'email',
-  'userManagement.columns.role': 'userRole',
+  'userManagement.columns.userRole': 'userRole',
   'userManagement.columns.createTime': 'createTime',
   'userManagement.columns.operations': 'Operations',
   // size

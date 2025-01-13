@@ -68,7 +68,7 @@
             borderRadius: 2,
           },
         },
-      };
+      } as any;
     });
     return {
       data,
@@ -166,7 +166,7 @@
             data,
           },
         ],
-      };
+      } as any;
     });
     return {
       data,
