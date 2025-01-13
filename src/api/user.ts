@@ -26,10 +26,12 @@ export interface DeleteData {
 }
 
 export interface UserQueryRequest {
-  id: string;
+  id?: string;
   userName?: string;
   userProfile?: string;
-  userRole: string;
+  userRole?: string;
+  current?: string;
+  pageSize?: string;
 }
 
 const prefix: string = import.meta.env.VITE_API_USER_CENTER_PREFIX;

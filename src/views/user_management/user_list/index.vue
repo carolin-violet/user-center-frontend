@@ -434,9 +434,7 @@
       title: '删除确认',
       content: '确认删除该账户吗?',
       onOk: () => {
-        deleteUser({
-          id: user.id,
-        }).then(() => {
+        deleteUser(user.id).then(() => {
           Message.success('删除成功!');
           search();
         });
