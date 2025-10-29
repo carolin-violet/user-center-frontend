@@ -11,7 +11,7 @@ export default mergeConfig(
         strict: true,
       },
       proxy: {
-        '/user-center-api': {
+        '/api/user-center': {
           target: 'http://localhost:8100',
           changeOrigin: true,
         },
